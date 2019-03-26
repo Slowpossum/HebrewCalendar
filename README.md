@@ -1,0 +1,1 @@
+This is the readme for the Hebrew Calendar Website by Austin Kim, Travis Henson, and Thomas Smith.
