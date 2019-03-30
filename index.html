@@ -1,13 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Hebrew Calendar</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="./assets/CSS/index.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js" defer></script>
+    <script src="./assets/javascript/index.js" defer></script>
+    <title>Hebrew Calendar Sign-in</title>
 </head>
 
 <body>
-    
+    <div class="container">
+        <div class="row">
+            <ul class="collapsible col s6">
+                <li>
+                    <div class="collapsible-header"><i class="large material-icons">arrow_forward</i>Log In</div>
+                    <div class="collapsible-body">
+                        <form>
+                            <input id="loginEmail" type="text" value="Email">
+                            <input id="loginPassword" type="text" value="Password">
+                            <input id="loginSubmit" type="submit" value="Log In">
+                        </form>
+                </li>
+                <li>
+                    <div class="collapsible-header"><i class="large material-icons">border_color</i>Sign-Up</div>
+                    <div class="collapsible-body">
+                        <form>
+                            <input id="signupEmail" type="text" value="Email">
+                            <input id="signupPassword" type="text" value="Password">
+                            <input id="signupSubmit" type="submit" value="Sign Up">
+                        </form>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
 </body>
+
 </html>

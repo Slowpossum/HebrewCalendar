@@ -1,0 +1,57 @@
+/* 
+/
+/ ELEMENTS
+/
+*/
+
+body {
+    background-color: #2183d3;
+}
+
+h1 {
+    color: white;
+    font-size: 30px;
+}
+
+
+
+
+/* 
+/
+/ IDS
+/
+*/
+
+
+
+
+
+/* 
+/
+/ CLASSES
+/
+*/
+.noBorder {
+    border: 0;
+}
+
+.noMargin {
+    margin: 0;
+}
+
+.collapsible {
+    color: #103f65;
+    padding: 0 !important;
+    border-color: #3e8cdb;
+}
+
+.collapsible-header {
+    background-color: #65a4e2;
+    border-color: #3e8cdb;
+}
+
+.collapsible-body {
+    border-top: 3px solid #3e8cdb;
+    border-color: #3e8cdb;
+    background-color: #9bc4ec;
+}
