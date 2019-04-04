@@ -5,42 +5,136 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- ADDITIONAL JAVASCRIPT LIBRARIES -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/5.9.2/firebase.js" defer=""></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js" defer></script>
+    <!-- WEBSITE SCRIPTS -->
+    <!-- <script src="./assets/javascript/datelib.js" defer></script> -->
+    <script src="./assets/javascript/materializeInit.js" defer></script>
+    <script src="./assets/javascript/mockup.js" defer></script>
+    <script src="./assets/javascript/calendar.js" defer></script>
+    <script src="./assets/javascript/auth.js" defer></script>
+    <!-- CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="./assets/CSS/index.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" defer></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js" defer></script>
-    <script src="./assets/javascript/index.js" defer></script>
-    <title>Hebrew Calendar Sign-in</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
+    <title>Hebrew Calendar</title>
 </head>
 
 <body>
-    <div class="container">
-        <div class="row">
-            <ul class="collapsible col s6">
-                <li>
-                    <div class="collapsible-header"><i class="large material-icons">arrow_forward</i>Log In</div>
-                    <div class="collapsible-body">
-                        <form>
-                            <input id="loginEmail" type="text" value="Email">
-                            <input id="loginPassword" type="text" value="Password">
-                            <input id="loginSubmit" type="submit" value="Log In">
-                        </form>
-                </li>
-                <li>
-                    <div class="collapsible-header"><i class="large material-icons">border_color</i>Sign-Up</div>
-                    <div class="collapsible-body">
-                        <form>
-                            <input id="signupEmail" type="text" value="Email">
-                            <input id="signupPassword" type="text" value="Password">
-                            <input id="signupSubmit" type="submit" value="Sign Up">
-                        </form>
-                    </div>
-                </li>
-            </ul>
+    <header>
+        <h1>לוח עברי | Hebrew Calendar</h1>
+
+        <div id="nav">
+            <a href="#" class="modal-trigger loggedOut" style="display: none" data-target="loginModal">
+                <p>Log-In</p>
+            </a>
+            <a href="#" class="modal-trigger loggedOut" style="display: none" data-target="signupModal">
+                <p>Sign-Up</p>
+            </a>
+            <a href="#" class="modal-trigger loggedIn" style="display: none" data-target="accountModal">
+                <p>Account</p>
+            </a>
+            <a href="#" id="logoutButton" class="loggedIn" style="display: none">
+                <p>Log Out</p>
+            </a>
+        </div>
+    </header>
+
+    <div id="websiteBody">
+        <div id="sidebar">
+            <div id="sidebarPanel" style="display: none;">
+                <h4 class="sidebarDayHeader noMargin">test      </h4>
+                <ul class="sidebarDayContent noMargin">
+                    <li>test1</li>
+                    <li>test2</li>
+                    <li>test3</li>
+                </ul>
+            </div>
+            <i class="fa-2x fas fa-grip-lines-vertical"></i>
+        </div>
+
+        <div class="calendarContainer">
+            <i class="fa-2x fas fa-chevron-left"></i>
+            <div id="month">
+            </div>
+            <i class="fa-2x fas fa-chevron-right"></i>
+
+
+            <div id="floatingView" style="display: none;">
+                <div>
+                    <p class="expandedDateGreg noMargin"></p>
+                    <p class="expandedDateHeb noMargin" style="text-align: right"></p>
+                </div>
+                <div id="eventsDiv">
+                    <p class="noMargin">Events</p>
+                    <ul id="eventsList"></ul>
+                </div>
+                <button id="addEvent" class="modal-trigger" data-target="eventModal">
+                    <i class="fas fa-plus"></i>
+                    <p class="noMargin">Add</p>
+                </button>
+            </div>
         </div>
     </div>
 
+
+    <!-- 
+        MATERIALIZE MODALS
+     -->
+    <!-- LOG IN MODAL -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <form id="loginForm">
+                <div class="input-field">
+                    <input type="email" id="loginEmail" required />
+                    <label for="loginEmail">Email</label>
+                </div>
+                <div class="input-field">
+                    <input type="password" id="loginPassword" required />
+                    <label for="loginPassword">Password</label>
+                </div>
+                <button>Log In</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- SIGN UP MODAL -->
+    <div id="signupModal" class="modal">
+        <div class="modal-content">
+            <form id="signupForm">
+                <div class="input-field">
+                    <input type="email" id="signupEmail" required />
+                    <label for="signupEmail">Email</label>
+                </div>
+                <div class="input-field">
+                    <input type="password" id="signupPassword" required />
+                    <label for="signupPassword">Password</label>
+                </div>
+                <button>Sign Up</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ACCOUNT MODAL -->
+    <div id="accountModal" class="modal">
+        <div class="modal-content">
+            <h1>Account Details</h1>
+            <div class="accountDetails"></div>
+        </div>
+    </div>
+
+    <!-- EVENT MODAL -->
+    <div id="eventModal" class="modal">
+        <div class="modal-content">
+            <p class="noMargin"></p>
+            <p class="noMargin"></p>
+            <textarea id="eventText" rows></textarea>
+            <button id="eventModalSubmit">Add Event</button>
+        </div>
+    </div>
 </body>
 
 </html>
