@@ -30,6 +30,7 @@ function getMonth(month, year) {
 
 var month = "April";
 var year = 2019;
+var zipCode = 23219;
 var constructedMonth = getMonth(month, year);
 
 console.log(constructedMonth);
