@@ -20,6 +20,9 @@ var monthColors = {
     Av: "#ffd8b1",
     Elul: "#5bf7d8",
 }
+var monthHolidaysEtc = {
+
+};
 var userEvents = {
 };
 
@@ -28,7 +31,9 @@ var userEvents = {
 //
 //
 
-createMonth();
+// getCalendarData();
+// setTimeout(createMonth, 250);
+// createMonth();
 
 
 //
@@ -150,7 +155,7 @@ function updateDayBody(day) {
 }
 
 function updateSidebarPanel() {
-    $("#sidebarPanel").empty();
+    $("#userEvents").empty();
 
     for (day in userEvents[month]) {
         var currHeader = $("<h4 class='sidebarDayHeader noMargin'>").text(month + " " + day);
@@ -160,7 +165,7 @@ function updateSidebarPanel() {
             currHeaderContent.append($("<li>").text("●" + userEvents[month][day][events]));
         }
 
-        $("#sidebarPanel").append(currHeader, currHeaderContent);
+        $("#userEvents").append(currHeader, currHeaderContent);
     }
 }
 
@@ -182,38 +187,31 @@ $(".fa-grip-lines-vertical").on("click", function () {
     $("#sidebarPanel").animate({ width: "toggle", margin: "toggle" }, 250);
 });
 
-$(".day").on("click", function (e) {
-    var leftVal = $(this).offset().left + 125;
-    var topVal = $(this).offset().top + 40;
+$(document).on("click", ".day", function () {
+    var leftVal = $(this).offset().left + 70;
+    var topVal = $(this).offset().top - 80;
     var bgCol = $(this).css("background-color");
     var toPop = $(this)[0].attributes[1].value;
 
-    e.stopPropagation();
     populateExpandedView(toPop);
 
     if ($("#floatingView").is(":visible")) {
         if (prevClick === $(this)[0].attributes[1].value) {
-            $("#floatingView").animate({ width: "toggle", height: "toggle" }, 250);
+            $("#floatingView").animate({ width: "toggle" }, 250);
         } else {
-            $("#floatingView").animate({ width: "toggle", height: "toggle" }, 250);
+            $("#floatingView").animate({ width: "toggle" }, 250);
 
             setTimeout(function () {
                 $("#floatingView").css({ left: leftVal, top: topVal, "background-color": bgCol });
-                $("#floatingView").animate({ width: "toggle", height: "toggle" }, 250);
+                $("#floatingView").animate({ width: "toggle" }, 250);
             }, 260);
         }
     } else {
         $("#floatingView").css({ left: leftVal, top: topVal, "background-color": bgCol });
-        $("#floatingView").animate({ width: "toggle", height: "toggle" }, 250);
+        $("#floatingView").animate({ width: "toggle" }, 250);
     }
 
     prevClick = $(this)[0].attributes[1].value;
-});
-
-$(document).on("click", function () {
-    if ($("#floatingView").is(":visible")) {
-        $("#floatingView").animate({ width: "toggle", height: "toggle" }, 250);
-    }
 });
 
 $("#addEvent").on("click", function () {

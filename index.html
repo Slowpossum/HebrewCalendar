@@ -9,10 +9,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" defer></script>
     <script src="https://www.gstatic.com/firebasejs/5.9.2/firebase.js" defer=""></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js" defer></script>
-    <!-- WEBSITE SCRIPTS -->
-    <!-- <script src="./assets/javascript/datelib.js" defer></script> -->
     <script src="./assets/javascript/materializeInit.js" defer></script>
-    <script src="./assets/javascript/mockup.js" defer></script>
+    <!-- WEBSITE SCRIPTS -->
+    <script src="./assets/javascript/dateLib.js" defer></script>
+    <!-- <script src="./assets/javascript/mockup.js" defer></script> -->
+    <script src="./assets/javascript/calendarData.js" defer></script>
     <script src="./assets/javascript/calendar.js" defer></script>
     <script src="./assets/javascript/auth.js" defer></script>
     <!-- CSS -->
@@ -45,13 +46,22 @@
 
     <div id="websiteBody">
         <div id="sidebar">
-            <div id="sidebarPanel" style="display: none;">
-                <h4 class="sidebarDayHeader noMargin">test      </h4>
-                <ul class="sidebarDayContent noMargin">
-                    <li>test1</li>
-                    <li>test2</li>
-                    <li>test3</li>
-                </ul>
+            <div id="sidebarPanel" style="display: none">
+                <div class="row">
+                    <div class="col s12">
+                        <ul class="tabs">
+                            <li class="tab col s6"><a class="active" href="#dailyInfo">Daily Info</a></li>
+                            <li class="tab col s6"><a href="#userEvents">User Events</a></li>
+                        </ul>
+                    </div>
+                    <div id="userEvents" class="col s12">
+
+                    </div>
+
+                    <div id="dailyInfo" class="col s12">
+
+                    </div>
+                </div>
             </div>
             <i class="fa-2x fas fa-grip-lines-vertical"></i>
         </div>
@@ -63,19 +73,30 @@
             <i class="fa-2x fas fa-chevron-right"></i>
 
 
-            <div id="floatingView" style="display: none;">
-                <div>
-                    <p class="expandedDateGreg noMargin"></p>
-                    <p class="expandedDateHeb noMargin" style="text-align: right"></p>
+            <div id="floatingView" style="display: none">
+                <div class="row">
+                    <div class="col s12">
+                        <ul class="tabs">
+                            <li class="tab col s6"><a class="active" href="#info">Info</a></li>
+                            <li class="tab col s6"><a href="#events">Events</a></li>
+                        </ul>
+                    </div>
+                    <div id="events" class="col s12">
+                        <div id="eventsDiv">
+                            <p class="noMargin">Events</p>
+                            <ul id="eventsList"></ul>
+                        </div>
+                        <button id="addEvent" class="modal-trigger" data-target="eventModal">
+                            <i class="fas fa-plus"></i>
+                            <p class="noMargin">Add</p>
+                        </button>
+                    </div>
+
+                    <div id="info" class="col s12">
+                        <p class="expandedDateGreg noMargin"></p>
+                        <p class="expandedDateHeb noMargin" style="text-align: right"></p>
+                    </div>
                 </div>
-                <div id="eventsDiv">
-                    <p class="noMargin">Events</p>
-                    <ul id="eventsList"></ul>
-                </div>
-                <button id="addEvent" class="modal-trigger" data-target="eventModal">
-                    <i class="fas fa-plus"></i>
-                    <p class="noMargin">Add</p>
-                </button>
             </div>
         </div>
     </div>
@@ -112,6 +133,10 @@
                 <div class="input-field">
                     <input type="password" id="signupPassword" required />
                     <label for="signupPassword">Password</label>
+                </div>
+                <div class="input-field">
+                    <input type="text" id="zipCode" required />
+                    <label for="zipCode">Zip Code</label>
                 </div>
                 <button>Sign Up</button>
             </form>

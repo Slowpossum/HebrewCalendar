@@ -4,13 +4,35 @@
 @import url('https://fonts.googleapis.com/css?family=Hind+Vadodara|Open+Sans+Condensed:300|Raleway');
 
 
+/* 
+/
+/   SCROLLBAR CUSTOMIZATION
+/
+*/
+#eventsList::-webkit-scrollbar, #sidebarPanel::-webkit-scrollbar {
+    width: 12px;
+}
+
+#eventsList::-webkit-scrollbar-track, #sidebarPanel::-webkit-scrollbar-track {
+    width: 14px;
+    background: rgba(0, 0, 0, 0);
+}
+
+#eventsList::-webkit-scrollbar-thumb, #sidebarPanel::-webkit-scrollbar-thumb {
+    background: #2183d3;
+    border-radius: 8px;
+}
+
+#eventsList::-webkit-scrollbar-thumb:hover, #sidebarPanel::-webkit-scrollbar-thumb:hover {
+    background: #1d72b8;
+}
+
 
 /* 
 /
 / ELEMENTS
 /
 */
-
 body, html {
     width: 100%;
     height: 100%;
@@ -103,7 +125,18 @@ li {
     font-weight: 600;
 }
 
+label {
+    color: white !important;
+}
 
+input {
+    border-bottom: 1px solid white !important;
+    color: white;
+}
+
+form { 
+    text-align: center;
+}
 
 
 /* 
@@ -111,7 +144,6 @@ li {
 / CLASSES
 /
 */
-
 .noMargin {
     margin: 0;
 }
@@ -170,6 +202,7 @@ li {
 .calendarContainer {
     display: flex;
     align-items: center;
+    align-self: flex-start;
     margin: 0 auto;
     padding: 5px;
 }
@@ -207,7 +240,46 @@ li {
     word-wrap: break-word;
 }
 
+.modal {
+    border-radius: 13px;
+    background-color: #65a4e2;
+    color: white;
+}
 
+.modal button {
+    background-color: #2183d3;
+    height: 40px;
+    padding: 0px 15px;
+    margin: 0 auto;
+}
+
+.row {
+    margin-bottom: 0px;
+}
+
+.tabs {
+    overflow-x: hidden;
+    border-radius: 7px 7px 5px 5px;
+    height: 30px;
+    background-color: #65a4e2;
+}
+
+.tabs .tab a:focus, .tabs .tab a:focus.active {
+    background-color: #2183d3;
+}
+
+.tabs .indicator {
+    background-color:#1c6fb3;
+}
+
+.tab a {
+    line-height: 30px;
+    color: white !important;
+}
+
+.col {
+    padding: 0px !important;
+}
 
 
 /* 
@@ -215,9 +287,9 @@ li {
 / IDS
 /
 */
-
 #month {
     width: 1000px;
+    margin-top: 30px;
 }
 
 #sidebar {
@@ -234,8 +306,10 @@ li {
     height: calc(100% - 20px);
     width: 350px;
     margin: 0px 0px 0px 10px;
-    padding: 20px;
-    background-color: #a8cbee; 
+    padding: 5px 10px 10px 10px;
+    background-color: #a8cbee;
+    overflow-y: auto;
+    white-space: nowrap;
 }
 
 #websiteBody {
@@ -250,7 +324,7 @@ li {
     position: absolute;
     left: 0;
     top: 0;
-    height: 300px;
+    min-height: 10px;
     width: 300px;
     padding: 10px;
     background-color: white;
@@ -292,6 +366,7 @@ li {
     padding: 0px 10px;
     white-space: normal;
     word-wrap: break-word;
+    overflow-y: auto;
 }
 
 #eventText {
@@ -301,9 +376,85 @@ li {
     font-weight: 600;
     padding: 10px;
     border-radius: 15px;
+    background-color: #a8cbee;
+    border: none;
     outline: none;
 }
 
 #eventModalSubmit {
     margin-top: 5px;
+}
+
+
+/* 
+/
+/   MEDIA QUERIES
+/
+*/
+@media only screen and (max-width: 1490px) {
+    #sidebarPanel {
+        width: 250px;
+    }
+
+    .dayBody {
+        min-height: 40px;
+    }
+
+    .dayBody .fas {
+        font-size: 30px;
+        margin: 5px 5px;
+    }
+
+    #month {
+        width: 900px;
+    }
+
+    #month p {
+        font-size: 18px;
+    }
+
+    #floatingView {
+        height: 200px;
+        width: 250px;
+    }
+
+    #floatingView p {
+        font-size: 18px;
+    }
+
+    #eventsList {
+        height: 100px;
+        margin: 1px 0px;
+    }
+    
+    #addEvent {
+        height: 25px;
+    }
+
+    #addEvent p, #addEvent i {
+        font-size: 15px;
+    }
+}
+
+@media only screen and (max-width: 1280px) {
+    #sidebarPanel {
+        width: 200px;
+    }
+
+    .dayBody {
+        min-height: 30px;
+    }
+
+    .dayBody .fas {
+        font-size: 25px;
+        margin: 0px 0px;
+    }
+
+    #month {
+        width: 800px;
+    }
+
+    #month p {
+        font-size: 15px;
+    }
 }
