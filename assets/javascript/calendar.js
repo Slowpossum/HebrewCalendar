@@ -1,3 +1,13 @@
+//  GLOBALS
+
+var d = new Date();
+var monthArr = ["January", "February", "March", "April", "May", "June", "July",
+  "August", "September", "October", "November", "December"];
+var numMonth = d.getMonth();
+var month = monthArr[numMonth];
+var year = d.getFullYear();
+var zipCode = null;
+var constructedMonth;
 //
 //
 //  VARIABLES
@@ -49,7 +59,7 @@ function createMonth() {
     var table = $("<table>");
     var header = $("<th colspan='7'>");
     var row = $("<tr>");
-    var monthOffset = constructedMonth.startDay;
+    var monthOffset = constructedMonth.startDay - 1;
     var maxDay = constructedMonth.hArray.length - 1;
 
     header.append(createHeaderText());
@@ -76,7 +86,7 @@ function createMonth() {
         for (var i = 0; i < 7; i++) {
             var currDay = (i + 1) + (7 * n);
 
-            if (currDay <= maxDay && currDay <= constructedMonth.startDay) {
+            if (currDay <= maxDay && currDay <= constructedMonth.startDay - 1) {
                 row.append(createDay("blank"));
             } else if (currDay <= maxDay + monthOffset) {
                 row.append(createDay(currDay - monthOffset));
@@ -121,7 +131,7 @@ function createDay(currDay) {
 
         var bodyStar = icons[0];
         var bodyExclamation = icons[1];
-        if ([6, 13, 20, 27, 34].indexOf((currDay + constructedMonth.startDay)) !== -1) {
+        if ([6, 13, 20, 27, 34].indexOf((currDay + constructedMonth.startDay - 1)) !== -1) {
             var bodyCandle = $("<i class='fas fa-menorah' style='display: inline-block'>");
         } else {
             var bodyCandle = $("<i class='fas fa-menorah' style='display: none'>");
@@ -148,8 +158,8 @@ function createDay(currDay) {
 }
 
 function populateExpandedView(day) {
-    var rowPos = Math.floor((parseInt(day) + constructedMonth.startDay - 1) / 7);
-    var dayPos = ((parseInt(day) + constructedMonth.startDay) - (7 * rowPos)) - 1;
+    var rowPos = Math.floor((parseInt(day) + constructedMonth.startDay - 2) / 7);
+    var dayPos = ((parseInt(day) + constructedMonth.startDay - 1) - (7 * rowPos)) - 1;
     var currDay = days[dayPos];
     var hebDay = constructedMonth.hArray[day];
 
@@ -353,7 +363,7 @@ $(document).on("click", ".day", function () {
 });
 
 $("#addEvent").on("click", function () {
-    var rowPos = Math.floor((parseInt(prevClick) + constructedMonth.startDay - 1) / 7);
+    var rowPos = Math.floor((parseInt(prevClick) + constructedMonth.startDay - 2) / 7);
     var dayPos = (prevClick - (7 * rowPos)) + 1;
 
     var currDay = days[dayPos];
