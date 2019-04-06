@@ -306,8 +306,10 @@ form {
     text-align: right;
 }
 
+.rtl {
+  direction: rtl}
 
-/* 
+/*
 /
 / IDS
 /
