@@ -133,7 +133,7 @@ function createDay(currDay) {
 
         dayHead.append(headText);
         dayBody.append(bodyStar, bodyExclamation, bodyCandle, bodyBook);
-        dayMonth.text(`${currDayHeb.hMonth} ${currDayHeb.hMonthHebrew}`);
+        dayMonth.html(`${currDayHeb.hDay} ${currDayHeb.hMonth} <br> ${currDayHeb.hDayHebrew} ${currDayHeb.hMonthHebrew}`);
         data.append(dayHead, dayBody, dayMonth);
     } else {
         var data = $("<td>");
