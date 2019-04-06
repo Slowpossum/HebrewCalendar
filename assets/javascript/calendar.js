@@ -21,18 +21,19 @@ var monthColors = {
     Elul: "#5bf7d8",
 }
 var monthHolidaysEtc = {
-
+    allHolidays: {}
 };
 var userEvents = {
 };
 
+var uid = null;
+var zipcode
 
 //
 //
 //
 
-// getCalendarData();
-// setTimeout(createMonth, 250);
+
 // createMonth();
 
 
@@ -83,6 +84,8 @@ function createMonth() {
     }
 
     $("#month").append(table);
+    $(".calendarContainer").css({ display: "flex" });
+    updateDailyInfoPanel();
 }
 
 
@@ -91,14 +94,23 @@ function createDay(currDay) {
         var currDayHeb = constructedMonth.hArray[currDay];
         var dayHead = $("<div class='dayHead'>");
         var dayBody = $("<div class='dayBody'>");
-        var bodyExclamation = $("<i class='fas fa-exclamation-circle' style='display: none'>");
-        var bodyStar = $("<i class='fas fa-star-of-david' style='display: none'>");
+        var icons = populateDailyInfo(currDay);
+
+        var bodyStar = icons[0];
+        var bodyExclamation = icons[1];
+        if ([6, 13, 20, 27].indexOf((currDay + constructedMonth.startDay)) !== -1) {
+            var bodyCandle = $("<i class='fas fa-menorah' style='display: inline-block'>");
+        } else {
+            var bodyCandle = $("<i class='fas fa-menorah' style='display: none'>");
+        }
+        var bodyBook = icons[2];
+
         var dayMonth = $(`<p class="noMargin dayMonth" style='background-color: ${monthColors[currDayHeb.hMonth]}'>`);
         var headText = $("<p class='noMargin'>").text(currDay);
         var data = $("<td class='day'>").attr("value", currDay);
 
         dayHead.append(headText);
-        dayBody.append(bodyStar, bodyExclamation);
+        dayBody.append(bodyStar, bodyExclamation, bodyCandle, bodyBook);
         dayMonth.text(`${currDayHeb.hMonth} ${currDayHeb.hMonthHebrew}`);
         data.append(dayHead, dayBody, dayMonth);
     } else {
@@ -128,44 +140,156 @@ function populateExpandedView(day) {
     var currDay = days[dayPos];
     var hebDay = constructedMonth.hArray[day];
 
+    $("#eventsList").empty();
+    $("#holidaysList").empty();
+    $("#candleTime").empty();
+    $("#passagesList").empty();
+
     $(".expandedDateGreg").text(`${currDay}, ${month} ${day}, ${year}`);
     $(".expandedDateHeb").text(`${hebDay.hDayHebrew} ${hebDay.hMonthHebrew} ${hebDay.hYearHebrew}`);
 
-    try {
-        if (userEvents[month][day] !== undefined) {
-            updateDayBody(day);
-        } else {
-            $("#eventsList").empty();
-        }
-    } catch {
-        updateDayBody();
-    }
-}
-
-function updateDayBody(day) {
-    $("#eventsList").empty();
-
-    if (day) {
-        for (events in userEvents[month][day]) {
-            var event = $("<li>").text("●" + userEvents[month][day][events]);
+    if ($(`td[value="${day}"] .dayBody .fa-exclamation-circle`).is(":visible")) {
+        for (events in userEvents[year][month][day]) {
+            var event = $("<li>").text("●" + userEvents[year][month][day][events]);
 
             $("#eventsList").append(event);
         }
     }
+    if ($(`td[value="${day}"] .dayBody .fa-star-of-david`).is(":visible")) {
+        if (monthHolidaysEtc.holidaysArray[day].lenth > 1) {
+            for (holidays in monthHolidaysEtc.holidaysArray) {
+                var holiday = $("<li>").text("●" + monthHolidaysEtc.holidaysArray[day][holidays]);
+
+                $("#holidaysList").append(holiday);
+            }
+        } else {
+            var holiday = $("<li>").text("●" + monthHolidaysEtc.holidaysArray[day]);
+
+            $("#holidaysList").append(holiday);
+        }
+    }
+    if ($(`td[value="${day}"] .dayBody .fa-menorah`).is(":visible")) {
+        $("#candleTime").text(monthHolidaysEtc.candleArray[parseInt(day) + 1]);
+    }
+    if ($(`td[value="${day}"] .dayBody .fa-book`).is(":visible")) {
+        if (monthHolidaysEtc.torahArray[day].lenth > 1) {
+            for (passages in monthHolidaysEtc.torahArray) {
+                var passage = $("<li>").text("●" + monthHolidaysEtc.torahArray[day][passages]);
+
+                $("#holidaysList").append(passage);
+            }
+        } else {
+            var passage = $("<li>").text("Passages: " + monthHolidaysEtc.torahArray[day]);
+
+            $("#passagesList").append(passage);
+        }
+    }
 }
 
-function updateSidebarPanel() {
+function populateDailyInfo(day) {
+    var icons = [];
+
+    try {
+        if (userEvents[year][month][day] !== undefined) {
+            icons[1] = $("<i class='fas fa-exclamation-circle' style='display: inline-block'>");
+        } else {
+            icons[1] = $("<i class='fas fa-exclamation-circle' style='display: none'>");
+        }
+    } catch { 
+        icons[1] = $("<i class='fas fa-exclamation-circle' style='display: none'>");
+    }
+
+    if (monthHolidaysEtc.candleArray[day] !== undefined) {
+        if (monthHolidaysEtc.allHolidays[day] === undefined) {
+            monthHolidaysEtc.allHolidays[day] = [(monthHolidaysEtc.candleArray[day])];
+        }
+    }
+
+    if (monthHolidaysEtc.havdalahArray[day] !== undefined) {
+        if (monthHolidaysEtc.allHolidays[day] === undefined) {
+            monthHolidaysEtc.allHolidays[day] = [(monthHolidaysEtc.havdalahArray[day])];
+        } else {
+            monthHolidaysEtc.allHolidays[day].push(monthHolidaysEtc.havdalahArray[day]);
+        }
+    }
+
+    if (monthHolidaysEtc.holidaysArray[day] !== undefined) {
+        if (monthHolidaysEtc.allHolidays[day] === undefined) {
+            monthHolidaysEtc.allHolidays[day] = [(monthHolidaysEtc.holidaysArray[day])];
+        } else {
+            monthHolidaysEtc.allHolidays[day].push(monthHolidaysEtc.holidaysArray[day]);
+        }
+        icons[0] = $("<i class='fas fa-star-of-david' style='display: inline-block'>");
+    } else {
+        icons[0] = $("<i class='fas fa-star-of-david' style='display: none'>");
+    }
+
+    if (monthHolidaysEtc.torahArray[day] !== undefined) {
+        if (monthHolidaysEtc.allHolidays[day] === undefined) {
+            monthHolidaysEtc.allHolidays[day] = [(monthHolidaysEtc.torahArray[day])];
+        } else {
+            monthHolidaysEtc.allHolidays[day].push(monthHolidaysEtc.torahArray[day]);
+        }
+        icons[2] = $("<i class='fas fa-book' style='display: inline-block'>");
+    } else {
+        icons[2] = $("<i class='fas fa-book' style='display: none'>");
+    }
+
+    return icons;
+}
+
+function updateEventPanel() {
     $("#userEvents").empty();
 
-    for (day in userEvents[month]) {
+    if(userEvents[year] === undefined) {
+        userEvents[year] = {};
+    }
+
+    for (day in userEvents[year][month]) {
         var currHeader = $("<h4 class='sidebarDayHeader noMargin'>").text(month + " " + day);
         var currHeaderContent = $("<ul class='sidebarDayContent noMargin'>")
 
-        for (events in userEvents[month][day]) {
-            currHeaderContent.append($("<li>").text("●" + userEvents[month][day][events]));
+        for (events in userEvents[year][month][day]) {
+            var contentHolder = $("<div>");
+            contentHolder.append($("<li>").text("●" + userEvents[year][month][day][events]));
+            contentHolder.append($(`<button class='delete' index='${events}' day='${day}'>`).append("<i class='fas fa-minus'>"));
+
+            currHeaderContent.append(contentHolder);
         }
 
         $("#userEvents").append(currHeader, currHeaderContent);
+    }
+}
+
+function updateDailyInfoPanel() {
+    $("#dailyInfo").empty();
+
+    for (day in monthHolidaysEtc.allHolidays) {
+        var currHeader = $("<h4 class='sidebarDayHeader noMargin'>").text(month + " " + day);
+        var currHeaderContent = $("<ul class='sidebarDayContent noMargin'>")
+
+        for (events in monthHolidaysEtc.allHolidays[day]) {
+            currHeaderContent.append($("<li>").text("●" + monthHolidaysEtc.allHolidays[day][events]));
+        }
+
+        $("#dailyInfo").append(currHeader, currHeaderContent);
+    }
+}
+
+function updateExpandedViewEvents(day) {
+    $("#eventsList").empty();
+
+    if ($(`td[value="${day}"] .dayBody .fa-exclamation-circle`).is(":visible")) {
+        if (userEvents[year][month][day].length > 0) {
+            for (events in userEvents[year][month][day]) {
+                var event = $("<li>").text("●" + userEvents[year][month][day][events]);
+
+                $("#eventsList").append(event);
+            }
+        } else {
+            delete userEvents[year][month][day]
+            $(`td[value="${day}"] .dayBody .fa-exclamation-circle`).css({ display: "none" });
+        }
     }
 }
 
@@ -225,20 +349,50 @@ $("#addEvent").on("click", function () {
 });
 
 $("#eventModalSubmit").on("click", function () {
-    if (userEvents[month] === undefined) {
-        userEvents[month] = {};
-        userEvents[month][prevClick] = [$("#eventText").val()];
-        $(`td[value="${prevClick}"] .fa-exclamation-circle`).css({ display: "inline-block" });
-    } else if (userEvents[month] !== undefined && userEvents[month][prevClick] === undefined) {
-        userEvents[month][prevClick] = [$("#eventText").val()];
-        $(`td[value="${prevClick}"] .fa-exclamation-circle`).css({ display: "inline-block" });
-    } else if (userEvents[month] !== undefined && userEvents[month][prevClick] !== undefined) {
-        userEvents[month][prevClick].push($("#eventText").val());
+    if(userEvents[year] === undefined) {
+        console.log("aaaaaa");
+        userEvents[year] = {};
+        console.log(userEvents);
     }
 
-    updateDayBody(prevClick);
-    updateSidebarPanel();
+    if (userEvents[year][month] === undefined) {
+        userEvents[year][month] = {};
+        userEvents[year][month][prevClick] = [$("#eventText").val()];
+        $(`td[value="${prevClick}"] .fa-exclamation-circle`).css({ display: "inline-block" });
+    } else if (userEvents[year][month] !== undefined && userEvents[year][month][prevClick] === undefined) {
+        userEvents[year][month][prevClick] = [$("#eventText").val()];
+        $(`td[value="${prevClick}"] .fa-exclamation-circle`).css({ display: "inline-block" });
+    } else if (userEvents[year][month] !== undefined && userEvents[year][month][prevClick] !== undefined) {
+        userEvents[year][month][prevClick].push($("#eventText").val());
+    }
+
+    $("#eventsList").empty();
+    for (events in userEvents[year][month][prevClick]) {
+        var event = $("<li>").text("●" + userEvents[year][month][prevClick][events]);
+
+        $("#eventsList").append(event);
+    }
+
+    updateEventPanel();
 
     $("#eventText").val("");
     M.Modal.getInstance($("#eventModal")).close();
+
+    db.collection("users").doc(uid).update({
+        events: userEvents
+    });
+});
+
+$("#userEvents").on("click", ".delete", function () {
+    var index = $(this).attr("index");
+    var dayDelete = $(this).attr("day");
+
+    userEvents[year][month][dayDelete].splice(index, 1);
+
+    updateExpandedViewEvents(dayDelete);
+    updateEventPanel();
+
+    db.collection("users").doc(uid).update({
+        events: userEvents
+    });
 });
