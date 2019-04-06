@@ -11,6 +11,7 @@ var monthColors = {
     Kislev: "#dea9bd",
     Tevet: "#a0a0e2",
     Shvat: "#ff9a35",
+    Adar: "#e665f3",
     "Adar I": "#e665f3",
     "Adar II": "#00a6a6",
     Nisan: "#800040",
