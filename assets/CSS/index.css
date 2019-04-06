@@ -154,16 +154,16 @@ form {
 }
 
 .dayBody {
-    min-height: 55px;
+    min-height: 40px;
     overflow: hidden;
     text-align: center;
 }
 
 .dayBody .fas {
     color: #4099e1;
-    font-size: 25px;
+    font-size: 20px;
     margin: 0px 5px;
-    line-height: 55px;
+    line-height: 40px;
 }
 
 .fas {
@@ -296,9 +296,10 @@ form {
 
 .headerYear, #yearSelect {
     float: left;
-    width: 45px;
+    width: 40px;
     line-height: 60px;
-    margin-left: 8px;
+    margin-left: 7px;
+    font-size: 18px;
 }
 
 .expandedDateHeb, .expandedDateHebRoman {
@@ -312,9 +313,13 @@ form {
 /
 */
 #month {
-    width: 1000px;
-    height: 750px;
+    width: 900px;
+    height: 642px;
     margin-top: 30px;
+}
+
+#month p {
+    font-size: 16px;
 }
 
 #sidebar {
@@ -350,11 +355,16 @@ form {
     left: 0;
     top: 0;
     min-height: 10px;
-    width: 300px;
+    height: 200px;
+    width: 250px;
     padding: 10px;
     background-color: white;
     color: #4b9ee2;
     white-space: nowrap;
+}
+
+#floatingView p {
+    font-size: 18px;
 }
 
 #nav {
@@ -374,6 +384,7 @@ form {
 #addEvent {
     display: flex;
     justify-content: center;
+    height: 25px;
     width: 100px;
     margin: 0 auto;
 }
@@ -383,11 +394,15 @@ form {
     margin-left: 5px;
 }
 
+#addEvent p, #addEvent i {
+    font-size: 15px;
+}
+
 #eventsList {
     border-left: 3px solid #65a4e2;
     border-right: 3px solid #65a4e2;
-    height: 150px;
-    margin: 5px 0px;
+    height: 100px;
+    margin: 1px 0px;
     padding: 0px 10px;
     white-space: normal;
     word-wrap: break-word;
@@ -437,7 +452,6 @@ form {
     margin-left: 3px;
     padding: 0px 8px;
     color: #2183d3;
-    font-size: 20px;
     font-family: "Raleway";
     font-weight: 900;
 }
@@ -459,57 +473,57 @@ form {
 /   MEDIA QUERIES
 /
 */
-@media only screen and (max-width: 1490px), (max-height: 870px) {
+@media only screen and (max-width: 1090px), (max-height: 870px) {
     #sidebarPanel {
         width: 250px;
     }
 
-    .dayBody {
+    /* .dayBody {
         min-height: 40px;
-    }
-
+    } */
+/* 
     .dayBody .fas {
         font-size: 20px;
         margin: 0px 5px;
         line-height: 40px;
-    }
+    } */
 
-    #month {
+    /* #month {
         width: 900px;
         height: 642px;
-    }
+    } */
 
-    #month p {
+    /* #month p {
         font-size: 16px;
-    }
+    } */
 
-    #floatingView {
+    /* #floatingView {
         height: 200px;
         width: 250px;
-    }
+    } */
 
-    #floatingView p {
+    /* #floatingView p {
         font-size: 18px;
-    }
+    } */
 
-    #eventsList {
+    /* #eventsList {
         height: 100px;
         margin: 1px 0px;
-    }
+    } */
     
-    #addEvent {
+    /* #addEvent {
         height: 25px;
-    }
+    } */
 
-    #addEvent p, #addEvent i {
+    /* #addEvent p, #addEvent i {
         font-size: 15px;
-    }
+    } */
 
-    .headerYear, #yearSelect {
+    /* .headerYear, #yearSelect {
         font-size: 18px;
         width: 40px;
         margin-left: 7px;
-    }
+    } */
 }
 
 @media only screen and (max-width: 1280px), (max-height: 760px) {
