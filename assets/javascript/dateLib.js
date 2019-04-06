@@ -576,3 +576,9 @@ for (var i = 1; i <= 30; ++i)
   monthObject.hArray[i].hDayHebrew + ' ' +
   monthObject.hArray[i].hMonthHebrew + ' ' +
   monthObject.hArray[i].hYearHebrew)
+
+ // Integration
+var month = 4
+var year = 2019
+var zipCode = null
+var constructedMonth = getMonth(month, year)
