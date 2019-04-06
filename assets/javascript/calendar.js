@@ -128,14 +128,18 @@ function createDay(currDay) {
         }
         var bodyBook = icons[2];
 
-        var dayMonth = $(`<p class="noMargin dayMonth" style='background-color: ${monthColors[currDayHeb.hMonth]}'>`);
+        var dayMonth = $(`<p class="noMargin dayMonth"
+          style='background-color: ${monthColors[currDayHeb.hMonth]}'>`)
+        var dayMonthHebrew = $(`<p class="noMargin dayMonthHebrew"
+          style='background-color: ${monthColors[currDayHeb.hMonth]}'>`)
         var headText = $("<p class='noMargin'>").text(currDay);
         var data = $("<td class='day'>").attr("value", currDay);
 
         dayHead.append(headText);
         dayBody.append(bodyStar, bodyExclamation, bodyCandle, bodyBook);
-        dayMonth.html(`${currDayHeb.hDay} ${currDayHeb.hMonth}<br/><span class='rtl'>${currDayHeb.hDayHebrew} ${currDayHeb.hMonthHebrew}</span>`);
-        data.append(dayHead, dayBody, dayMonth);
+        dayMonth.text(`${currDayHeb.hDay} ${currDayHeb.hMonth}`)
+        dayMonthHebrew.text(`${currDayHeb.hDayHebrew} ${currDayHeb.hMonthHebrew}`)
+        data.append(dayHead, dayBody, dayMonth, dayMonthHebrew);
     } else {
         var data = $("<td>");
     }
