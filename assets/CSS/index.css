@@ -156,14 +156,14 @@ form {
 .dayBody {
     min-height: 55px;
     overflow: hidden;
-    padding-left: 21px;
-    
+    text-align: center;
 }
 
 .dayBody .fas {
     color: #4099e1;
-    font-size: 30px;
-    margin: 10px 10px;
+    font-size: 25px;
+    margin: 0px 5px;
+    line-height: 55px;
 }
 
 .fas {
@@ -223,11 +223,10 @@ form {
 }
 
 .sidebarDayHeader {
-    /* display: inline-block; */
-    /* min-width: 150px; */
     font-weight: 600;
     color: #65a4e2;
     border-bottom: 4px dotted #65a4e2;
+    margin: 15px 0px 5px 0px;
     text-align: center;
 }
 
@@ -238,6 +237,15 @@ form {
     font-size: 20px;
     white-space: normal;
     word-wrap: break-word;
+}
+
+.sidebarDayContent div {
+    display: flex;
+    align-items: center;
+}
+
+.sidebarDayContent li {
+    width: calc(100% - 50px);
 }
 
 .modal {
@@ -289,6 +297,7 @@ form {
 */
 #month {
     width: 1000px;
+    height: 750px;
     margin-top: 30px;
 }
 
@@ -377,12 +386,22 @@ form {
     padding: 10px;
     border-radius: 15px;
     background-color: #a8cbee;
+    color: #4b9ee2;
     border: none;
     outline: none;
 }
 
 #eventModalSubmit {
     margin-top: 5px;
+}
+
+#loginError, #signupError {
+    color: red;
+    height: 30px;
+}
+
+#deleteAccount {
+    background-color: red;
 }
 
 
@@ -401,12 +420,14 @@ form {
     }
 
     .dayBody .fas {
-        font-size: 30px;
-        margin: 5px 5px;
+        font-size: 20px;
+        margin: 0px 5px;
+        line-height: 40px;
     }
 
     #month {
         width: 900px;
+        height: 642px;
     }
 
     #month p {
@@ -446,12 +467,14 @@ form {
     }
 
     .dayBody .fas {
-        font-size: 25px;
-        margin: 0px 0px;
+        font-size: 20px;
+        margin: 0px 2.5px;
+        line-height: 30px;
     }
 
     #month {
         width: 800px;
+        height: 537px;
     }
 
     #month p {
