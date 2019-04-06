@@ -71,7 +71,6 @@ function createMonth() {
 
     for (var n = 0; n <= maxDay + monthOffset / 7; n++) {
         row = $("<tr>");
-        console.log(maxDay / 7);
 
         for (var i = 0; i < 7; i++) {
             var currDay = (i + 1) + (7 * n);
@@ -95,7 +94,7 @@ function createHeaderText() {
     var headerTextGreg = $("<p class='noMargin' style='float: left; line-height: 60px'>").text(month + " ");
     // var monthSelect = createMonthSelectForm();
     var headerGregYear = $("<p class='noMargin headerYear'>'").text(year);
-    var yearSelect = $("<form id='yearSelectForm'><input id='yearSelect' style='display: none'>");
+    var yearSelect = $("<form id='yearSelectForm'><input id='yearSelect' style='display: none' maxlength='4'>");
     var selectError = $("<p id='yearSelectError' class='noMargin'>");
     var headerTextHebDiv = $("<div style='float: right'>");
     var headerTextHeb = $("<p class='noMargin'>").text(constructedMonth.hMonth + " " + constructedMonth.hYear);

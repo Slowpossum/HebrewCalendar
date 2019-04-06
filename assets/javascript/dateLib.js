@@ -567,6 +567,6 @@
     var monthArr = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     var numMonth = d.getMonth();
     var month = monthArr[numMonth];
-    var year = 2019;
+    var year = d.getFullYear();
     var zipCode = null;
     var constructedMonth;
