@@ -11,9 +11,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js" defer></script>
     <script src="./assets/javascript/materializeInit.js" defer></script>
     <!-- WEBSITE SCRIPTS -->
-    <!-- <script src="./assets/javascript/dateLib.js" defer></script> -->
+    <script src="./assets/javascript/dateLib.js" defer></script>
     <script src="./assets/javascript/randomVerse.js" defer></script>
-    <script src="./assets/javascript/mockup.js" defer></script>
     <script src="./assets/javascript/calendarData.js" defer></script>
     <script src="./assets/javascript/calendar.js" defer></script>
     <script src="./assets/javascript/auth.js" defer></script>
@@ -91,7 +90,8 @@
                     <div id="info" class="col s12">
                         <div>
                             <p class="expandedDateGreg noMargin"></p>
-                            <p class="expandedDateHeb noMargin" style="text-align: right"></p>
+                            <p class="expandedDateHeb noMargin"></p>
+                            <p class="expandedDateHebRoman noMargin"></p>
                             <p id="candleTime" class="noMargin">test</p>
                             <ul id="holidaysList" class="noMargin"></ul>
                             <ul id="passagesList" class="noMargin"></ul>
@@ -137,8 +137,8 @@
                     <label for="signupPassword">Password</label>
                 </div>
                 <div class="input-field">
-                    <input type="text" id="zipCode" required />
-                    <label for="zipCode">Zip Code</label>
+                    <input type="text" id="zipCode" maxlength="5" pattern="[\d*]{5}" required>
+                    <label for="zipCode">Zip Code (5 digits)</label>
                 </div>
                 <p id="signupError"></p>
                 <button>Sign Up</button>
@@ -150,7 +150,9 @@
     <div id="accountModal" class="modal">
         <div class="modal-content">
             <h1>Account Details</h1>
-            <div class="accountDetails"></div>
+            <p class="currentUser"></p>
+            <p class="currentZipCode"></p>
+            <button id="changeZip">Update ZIP Code</button>
             <button id="deleteAccount">DELETE ACCOUNT</button>
         </div>
     </div>
@@ -162,6 +164,29 @@
             <p class="noMargin"></p>
             <textarea id="eventText" rows></textarea>
             <button id="eventModalSubmit">Add Event</button>
+        </div>
+    </div>
+
+    <!-- DELETE ACCOUNT MODAL -->
+    <div id="deleteModal" class="modal">
+        <div class="modal-content">
+            <p>Are you sure you want to delete your account?</p>
+            <p class="bibleQuote"></p>
+            <div style="text-align: center">
+                <button id="confirmDelete">Delete</button>
+                <button id="cancelDelete">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- CHANGE ZIP MODAL -->
+    <div id="changeZipModal" class="modal">
+        <div class="modal-content">
+            <form id="changeZipForm">
+                <p>New ZIP Code:</p>
+                <input id="newZipInput" maxlength="5" pattern="[\d*]{5}">
+                <button type="submit">Submit</button>
+            </form>
         </div>
     </div>
 </body>

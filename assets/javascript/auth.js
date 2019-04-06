@@ -33,27 +33,30 @@ $("#signupForm").on("submit", function (e) {
     const password = $("#signupPassword").val();
     const zip = $("#zipCode").val();
 
-
-    auth.createUserWithEmailAndPassword(email, password).then(function (cred) {
-        uid = cred.user.uid;
-        return db.collection("users").doc(cred.user.uid).set({
-            events: {},
-            zipCode: zip
-        });
-    }).then(function () {
-        M.Modal.getInstance($("#signupModal")).close();
-        $("#signupForm")[0].reset();
-    }).catch(function (error) {
-        $("#signupError").text(error);
-
-        setTimeout(function () {
-            $("#signupError").animate({ opacity: 0 }, 2000);
+    if ($.isNumeric(zip)) {
+        auth.createUserWithEmailAndPassword(email, password).then(function (cred) {
+            uid = cred.user.uid;
+            return db.collection("users").doc(cred.user.uid).set({
+                events: {},
+                zipCode: zip
+            });
+        }).then(function () {
+            M.Modal.getInstance($("#signupModal")).close();
+            $("#signupForm")[0].reset();
+        }).catch(function (error) {
+            $("#signupError").text(error);
+    
             setTimeout(function () {
-                $("#signupError").empty();
-                $("#signupError").css({ opacity: 1 });
-            }, 2100);
-        }, 2500);
-    });
+                $("#signupError").animate({ opacity: 0 }, 2000);
+                setTimeout(function () {
+                    $("#signupError").empty();
+                    $("#signupError").css({ opacity: 1 });
+                }, 2100);
+            }, 2500);
+        });
+    } else {
+        alert("Please enter a valid ZIP code");
+    }
 });
 
 $("#loginForm").on("submit", function (e) {
@@ -65,7 +68,7 @@ $("#loginForm").on("submit", function (e) {
     auth.signInWithEmailAndPassword(email, password).then(function (cred) {
         M.Modal.getInstance($("#loginModal")).close();
         $("#loginForm")[0].reset();
-        uid = cred.user.uid;
+        
     }).catch(function (error) {
         $("#loginError").text(error);
 
@@ -86,40 +89,77 @@ $("#logoutButton").on("click", function (e) {
 });
 
 $("#deleteAccount").on("click", function () {
-    db.collection('users').doc(uid).delete();
-    firebase.auth().currentUser.delete().then(function () {
-        M.Modal.getInstance($("#accountModal")).close();
-        console.log("user deleted");
-    });
+    confirmDelete = true;
+    randomVerse();
+    M.Modal.getInstance($("#deleteModal")).open();
 });
+
+$("#confirmDelete").on("click", function () {
+    if (confirmDelete === true) {
+        confirmDelete = false;
+
+        db.collection('users').doc(uid).delete();
+        firebase.auth().currentUser.delete().then(function () {
+            M.Modal.getInstance($("#accountModal")).close();
+        });
+    }
+
+    $(".bibleQuote").text("Account deleted");
+    setTimeout(function () {
+        M.Modal.getInstance($("#deleteModal")).close();
+        $(".bibleQuote").empty();
+    }, 2000);
+});
+
+$("#cancelDelete").on("click", function () {
+    if (confirmDelete === true) {
+        confirmDelete === false;
+    }
+
+    $(".bibleQuote").text("Good choice.");
+        setTimeout(function () {
+            M.Modal.getInstance($("#deleteModal")).close();
+            $(".bibleQuote").empty();
+        }, 2000);
+});
+
+
 
 auth.onAuthStateChanged(function (user) {
     if (user) {
         $(".loggedIn").css({ "display": "block" });
         $(".loggedOut").css({ "display": "none" });
         uid = user.uid;
+        $(".currentUser").text("Logged in as: " + user.email); 
 
         db.collection("users").doc(uid).get().then(function (snap) {
             userEvents = snap.data().events;
             zipCode = snap.data().zipCode;
         }).then(function () {
+            constructedMonth = getMonth((numMonth + 1), year);
             getCalendarData();
-            setTimeout(createMonth, 250);
-            updateEventPanel();
+            $(".currentZipCode").text("Current ZIP code: " + zipCode);
         });
     } else {
         $(".loggedIn").css({ "display": "none" });
         $(".loggedOut").css({ "display": "block" });
+        $(".currentUser").empty();
+        $(".currentZipCode").empty();
         uid = null;
         zipCode = null;
-        monthHolidaysEtc = {
-            allHolidays: {}
-        };
+        resetPage();
+        resetMonthGlobals();
         userEvents = {
         };
-        $("#dailyInfo").empty();
-        $("#userEvents").empty();
-        $("#month").empty();
-        $(".calendarContainer").css({ display: "none" });
     }
 });
+
+function resetPage() {
+    monthHolidaysEtc = {
+        allHolidays: {}
+    };
+    $("#dailyInfo").empty();
+    $("#userEvents").empty();
+    $("#month").empty();
+    $(".calendarContainer").css({ display: "none" });
+}

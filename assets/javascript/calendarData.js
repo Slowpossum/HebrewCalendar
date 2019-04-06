@@ -3,13 +3,11 @@ var queryURL;
 
 // Pull data from user input and perform API request; then, perform two functions to return data for page display
 function getCalendarData() {
-    var months  = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-    var numMonth = months.indexOf(month) + 1;
     // Establish API request URL
-    
-    
-    queryURL = `https://www.hebcal.com/hebcal/?v=1&cfg=json&maj=on&min=on&mod=on&nx=on&year=${year}&month=${numMonth}&ss=on&mf=on&c=on&geo=zip&zip=${zipCode}&m=50&s=on`;
+    var dataMonth = numMonth + 1;
 
+    queryURL = `https://www.hebcal.com/hebcal/?v=1&cfg=json&maj=on&min=on&mod=on&nx=on&year=${year}&month=${dataMonth}&ss=on&mf=on&c=on&geo=zip&zip=${zipCode}&m=50&s=on`;
+    // console.log(queryURL);
     // Perform AJAX request
     $.ajax({
         url: queryURL,
@@ -70,8 +68,11 @@ function getCalendarData() {
                     havdalahArray.splice(date, 1, havdalahTime);
                 } else if (data[i].category === "parashat") {
                     var leyning = data[i].leyning;
-                    var torahPortion = leyning.torah;
-                    torahArray.splice(date, 1, torahPortion);
+                    
+                    if (leyning !== undefined) {
+                        var torahPortion = leyning.torah;
+                        torahArray.splice(date, 1, torahPortion);
+                    }
                 } else if (data[i].category === "holiday") {
                     var holidayName = data[i].title;
                     holidaysArray.splice(date, 1, holidayName);
@@ -83,5 +84,8 @@ function getCalendarData() {
             monthHolidaysEtc["torahArray"] = torahArray;
             monthHolidaysEtc["holidaysArray"] = holidaysArray;
         }
+    }).then(function () {
+        createMonth();
+        updateEventPanel();
     });
 }

@@ -98,7 +98,7 @@ h1 {
 }
 
 p {
-    font-size: 20px;
+    font-size: 17px;
     font-weight: 600;
 }
 
@@ -261,6 +261,11 @@ form {
     margin: 0 auto;
 }
 
+.accountDetails {
+    width: 100%;
+    min-height: 100px;
+}
+
 .row {
     margin-bottom: 0px;
 }
@@ -287,6 +292,17 @@ form {
 
 .col {
     padding: 0px !important;
+}
+
+.headerYear, #yearSelect {
+    float: left;
+    width: 45px;
+    line-height: 60px;
+    margin-left: 8px;
+}
+
+.expandedDateHeb, .expandedDateHebRoman {
+    text-align: right;
 }
 
 
@@ -400,8 +416,41 @@ form {
     height: 30px;
 }
 
+#accountModal .modal-content {
+    text-align: center;
+}
+
+#accountModal h1 {
+    float: none;
+}
+
 #deleteAccount {
     background-color: red;
+    text-align: center;
+}
+
+#yearSelect, #newZipInput {
+    border-radius: 15px;
+    border: none !important;
+    background-color: #a8cbee;
+    margin-top: 5px;
+    margin-left: 3px;
+    padding: 0px 8px;
+    color: #2183d3;
+    font-size: 20px;
+    font-family: "Raleway";
+    font-weight: 900;
+}
+
+#yearSelectError {
+    color: red;
+    margin-left: 20px;
+    line-height: 60px;
+    display: inline-block;
+}
+
+#newZipInput {
+    width: 100px;
 }
 
 
@@ -410,7 +459,7 @@ form {
 /   MEDIA QUERIES
 /
 */
-@media only screen and (max-width: 1490px) {
+@media only screen and (max-width: 1490px), (max-height: 870px) {
     #sidebarPanel {
         width: 250px;
     }
@@ -431,7 +480,7 @@ form {
     }
 
     #month p {
-        font-size: 18px;
+        font-size: 16px;
     }
 
     #floatingView {
@@ -455,9 +504,15 @@ form {
     #addEvent p, #addEvent i {
         font-size: 15px;
     }
+
+    .headerYear, #yearSelect {
+        font-size: 18px;
+        width: 40px;
+        margin-left: 7px;
+    }
 }
 
-@media only screen and (max-width: 1280px) {
+@media only screen and (max-width: 1280px), (max-height: 760px) {
     #sidebarPanel {
         width: 200px;
     }
@@ -478,6 +533,12 @@ form {
     }
 
     #month p {
+        font-size: 13px;
+    }
+
+    .headerYear, #yearSelect {
         font-size: 15px;
+        width: 34px;
+        margin-left: 6px;
     }
 }
