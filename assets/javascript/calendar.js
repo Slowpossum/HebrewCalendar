@@ -414,9 +414,11 @@ $(document).on("submit", "#yearSelectForm", function (e) {
     e.preventDefault();
 
     if ($("#yearSelect").val() > 1970) {
-        year = $("#yearSelect").val();
+        year = parseInt($("#yearSelect").val());
 
         resetPage();
+        resetMonthGlobals();
+        constructedMonth = getMonth((numMonth + 1), year);
         getCalendarData();
     } else {
         $("#yearSelectError").text("Please enter a year above 1970.");
