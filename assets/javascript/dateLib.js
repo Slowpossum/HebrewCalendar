@@ -5,12 +5,12 @@
  // 2218 Wednesday, 3 April 2019 (EDT) [17989]
  //
  // University of Richmond Coding Boot Camp run by Trilogy Education Services
- // Austin Kim
+ // Austin Kim, Thomas Smith, and Travis Henson
  //
  // Modified:
  //   2121 Thursday, 4 April 2019 (EDT) [17990]
  //   2310 Friday, 5 April 2019 (29 Adar II 5779) [EDT] {17991}
- //   1625 Saturday, 6 April 2019 (1 Nisan 5779) [EDT] {17992}
+ //   1945 Saturday, 6 April 2019 (1 Nisan 5779) [EDT] {17992}
  //////////////////////////////////////////////////////////////////////////////
 
  // TIME OBJECT:  Used to represent time durations, intervals, and offsets
@@ -259,7 +259,7 @@ function getMoladTishrei(gYear) {
     metonicOffset = Math.floor(-yearOffset / 19)
     synodicOffset -= 235 * metonicOffset
     hYearCurrent = 5780 - 19 * metonicOffset}
-    else if (yearOffset >= 19) {         // Go forward at last one Metonic cycle
+    else if (yearOffset >= 19) {         // Go forward at least one Metonic cyc
       metonicOffset = Math.floor(yearOffset / 19)
       synodicOffset += 235 * metonicOffset
       hYearCurrent = 5780 + 19 * metonicOffset}
@@ -272,7 +272,7 @@ function getMoladTishrei(gYear) {
       while (hYearCurrent !== hYear)
         if (isLeapYear(hYearCurrent++)) synodicOffset += 13
           else synodicOffset += 12
-  var synodicOffsetTime                  // Time object representing syn. offset
+  var synodicOffsetTime                  // Time object representing syn offset
   if (synodicOffset < 0) {
     synodicOffsetTime = synodicMonth.times(-synodicOffset)
     return moladSpring5779.minus(synodicOffsetTime)}
@@ -281,7 +281,7 @@ function getMoladTishrei(gYear) {
       return moladSpring5779.plus(synodicOffsetTime)}
       else return moladSpring5779}       // This last case should not occur
 
- // getRoshHashanah(moladTishrei):  Get date of Rosh Hashanah given molad Tishr.
+ // getRoshHashanah(moladTishrei):  Get date of Rosh Hashanah given molad Tishr
 function getRoshHashanah(moladTishrei) {
   var hYear = 3761 + moladTishrei.year   // Corresponding Hebrew year
   var moladAdjusted                      // Adjusted to obtain Rosh Hashanah
@@ -549,13 +549,17 @@ function getMonth(month, year) {
           monthsArray = getMonthsArray(roshHashanah0, roshHashanah1)
        // Reset Hebrew month and day numbers
           hMonth = 7                     // Restart at first month = Tishrei
-       // Update/append to year in top-level elements in monthObject
-          monthObject.hYear += '/' + hYear0.toString() // Hebrew year(s)
-          monthObject.hYearHebrew += '/' + hebrewNumerals(hYear0) // Year in Heb
+       // Update/append to year in top-level elements in monthObject, unless we
+       //   are about to increment past the last day of the Gregorian month
+          if (gDay < daysInMonth) {
+            monthObject.hYear += '/' + hYear0.toString() // Hebrew year(s)
+            monthObject.hYearHebrew += '/' + hebrewNumerals(hYear0)} // Year
           } // if (hMonth === 0)
-       // Update/append to month in top-level elements in monthObject
-        monthObject.hMonth += '/' + months[hMonth] // Hebrew month(s)
-        monthObject.hMonthHebrew += '/' + monthsHebrew[hMonth].substring(3)
+       // Update/append to month in top-level elements in monthObject, unless
+       //   we are about to increment past the last day of the Gregorian month
+        if (gDay < daysInMonth) {
+          monthObject.hMonth += '/' + months[hMonth] // Hebrew month(s)
+          monthObject.hMonthHebrew += '/' + monthsHebrew[hMonth].substring(3)}
         hDay = 1}                        // Reset day of (Hebrew) month
     } // for (var gDay ...
  // Add hArray to monthObject
