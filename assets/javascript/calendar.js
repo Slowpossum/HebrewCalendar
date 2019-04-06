@@ -69,8 +69,9 @@ function createMonth() {
 
     table.append(row);
 
-    for (var n = 0; n <= maxDay / 7; n++) {
+    for (var n = 0; n <= maxDay + monthOffset / 7; n++) {
         row = $("<tr>");
+        console.log(maxDay / 7);
 
         for (var i = 0; i < 7; i++) {
             var currDay = (i + 1) + (7 * n);
