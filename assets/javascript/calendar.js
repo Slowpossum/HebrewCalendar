@@ -10,7 +10,7 @@ var monthColors = {
     Cheshvan: "#a8ee9d",
     Kislev: "#dea9bd",
     Tevet: "#a0a0e2",
-    Shrat: "#ff9a35",
+    Shvat: "#ff9a35",
     "Adar I": "#e665f3",
     "Adar II": "#00a6a6",
     Nisan: "#800040",
@@ -28,6 +28,8 @@ var userEvents = {
 
 var uid = null;
 var zipcode
+
+var confirmDelete = false;
 
 //
 //
@@ -88,6 +90,26 @@ function createMonth() {
     updateDailyInfoPanel();
 }
 
+function createHeaderText() {
+    var headerTextGreg = $("<p class='noMargin' style='float: left; line-height: 60px'>").text(month + " ");
+    // var monthSelect = createMonthSelectForm();
+    var headerGregYear = $("<p class='noMargin headerYear'>'").text(year);
+    var yearSelect = $("<form id='yearSelectForm'><input id='yearSelect' style='display: none'>");
+    var selectError = $("<p id='yearSelectError' class='noMargin'>");
+    var headerTextHebDiv = $("<div style='float: right'>");
+    var headerTextHeb = $("<p class='noMargin'>").text(constructedMonth.hMonth + " " + constructedMonth.hYear);
+    var headerTextHebTrans = $("<p class='noMargin' style='text-align: right'>").text(constructedMonth.hMonthHebrew + " " + constructedMonth.hYearHebrew);
+
+    headerTextHebDiv.append(headerTextHeb, headerTextHebTrans);
+
+    var headerText = $("<div>").append(headerTextGreg, headerGregYear, yearSelect, selectError, headerTextHebDiv);
+
+    return headerText;
+}
+
+// function createMonthSelectForm() {
+//     var form = $("<select class=>")
+// }
 
 function createDay(currDay) {
     if (currDay !== "blank") {
@@ -98,7 +120,7 @@ function createDay(currDay) {
 
         var bodyStar = icons[0];
         var bodyExclamation = icons[1];
-        if ([6, 13, 20, 27].indexOf((currDay + constructedMonth.startDay)) !== -1) {
+        if ([6, 13, 20, 27, 34].indexOf((currDay + constructedMonth.startDay)) !== -1) {
             var bodyCandle = $("<i class='fas fa-menorah' style='display: inline-block'>");
         } else {
             var bodyCandle = $("<i class='fas fa-menorah' style='display: none'>");
@@ -120,23 +142,9 @@ function createDay(currDay) {
     return (data);
 }
 
-
-function createHeaderText() {
-    var headerTextGreg = $("<p class='noMargin' style='float: left; line-height: 60px'>").text(month + " " + year);
-    var headerTextHebDiv = $("<div style='float: right'>");
-    var headerTextHeb = $("<p class='noMargin'>").text(constructedMonth.hMonth + " " + constructedMonth.hYear);
-    var headerTextHebTrans = $("<p class='noMargin' style='text-align: right'>").text(constructedMonth.hMonthHebrew + " " + constructedMonth.hYearHebrew);
-
-    headerTextHebDiv.append(headerTextHeb, headerTextHebTrans);
-
-    var headerText = $("<div>").append(headerTextGreg, headerTextHebDiv);
-
-    return headerText;
-}
-
 function populateExpandedView(day) {
     var rowPos = Math.floor((parseInt(day) + constructedMonth.startDay - 1) / 7);
-    var dayPos = (day - (7 * rowPos)) + 1;
+    var dayPos = ((parseInt(day) + constructedMonth.startDay) - (7 * rowPos)) - 1;
     var currDay = days[dayPos];
     var hebDay = constructedMonth.hArray[day];
 
@@ -147,6 +155,7 @@ function populateExpandedView(day) {
 
     $(".expandedDateGreg").text(`${currDay}, ${month} ${day}, ${year}`);
     $(".expandedDateHeb").text(`${hebDay.hDayHebrew} ${hebDay.hMonthHebrew} ${hebDay.hYearHebrew}`);
+    $(".expandedDateHebRoman").text(`${hebDay.hDay} ${hebDay.hMonth} ${hebDay.hYear}`);
 
     if ($(`td[value="${day}"] .dayBody .fa-exclamation-circle`).is(":visible")) {
         for (events in userEvents[year][month][day]) {
@@ -169,7 +178,7 @@ function populateExpandedView(day) {
         }
     }
     if ($(`td[value="${day}"] .dayBody .fa-menorah`).is(":visible")) {
-        $("#candleTime").text(monthHolidaysEtc.candleArray[parseInt(day) + 1]);
+        $("#candleTime").text(monthHolidaysEtc.candleArray[parseInt(day)]);
     }
     if ($(`td[value="${day}"] .dayBody .fa-book`).is(":visible")) {
         if (monthHolidaysEtc.torahArray[day].lenth > 1) {
@@ -195,7 +204,7 @@ function populateDailyInfo(day) {
         } else {
             icons[1] = $("<i class='fas fa-exclamation-circle' style='display: none'>");
         }
-    } catch { 
+    } catch {
         icons[1] = $("<i class='fas fa-exclamation-circle' style='display: none'>");
     }
 
@@ -241,7 +250,7 @@ function populateDailyInfo(day) {
 function updateEventPanel() {
     $("#userEvents").empty();
 
-    if(userEvents[year] === undefined) {
+    if (userEvents[year] === undefined) {
         userEvents[year] = {};
     }
 
@@ -349,10 +358,8 @@ $("#addEvent").on("click", function () {
 });
 
 $("#eventModalSubmit").on("click", function () {
-    if(userEvents[year] === undefined) {
-        console.log("aaaaaa");
+    if (userEvents[year] === undefined) {
         userEvents[year] = {};
-        console.log(userEvents);
     }
 
     if (userEvents[year][month] === undefined) {
@@ -396,3 +403,115 @@ $("#userEvents").on("click", ".delete", function () {
         events: userEvents
     });
 });
+
+$(document).on("click", ".headerYear", function () {
+    $("#yearSelect").val(year);
+    $(".headerYear").css({ display: "none" });
+    $("#yearSelect").css({ display: "inline-block" });
+});
+
+$(document).on("submit", "#yearSelectForm", function (e) {
+    e.preventDefault();
+
+    if ($("#yearSelect").val() > 1970) {
+        year = $("#yearSelect").val();
+
+        resetPage();
+        getCalendarData();
+    } else {
+        $("#yearSelectError").text("Please enter a year above 1970.");
+
+        setTimeout(function () {
+            $("#yearSelectError").animate({ opacity: 0 }, 2000);
+            setTimeout(function () {
+                $("#yearSelectError").empty();
+                $("#yearSelectError").css({ opacity: 1 });
+            }, 2100);
+        }, 2500);
+    }
+});
+
+$(document).on("click", ".fa-chevron-left", function () {
+    if ($("#floatingView").is(":visible")) {
+        $("#floatingView").css({ display: "none" });
+    }
+
+    numMonth -= 1;
+
+    if (numMonth < 0) {
+        numMonth = 11;
+        year--;
+    }
+    month = monthArr[numMonth];
+
+    resetPage();
+    resetMonthGlobals();
+    constructedMonth = getMonth((numMonth + 1), year);
+    db.collection("users").doc(uid).get().then(function (snap) {
+        try {
+            userEvents = snap.data().events;
+        } catch {
+            console.log("fucked up");
+        }
+    }).then(function () {
+        getCalendarData();
+    });
+});
+
+$(document).on("click", ".fa-chevron-right", function () {
+    if ($("#floatingView").is(":visible")) {
+        $("#floatingView").css({ display: "none" });
+    }
+
+    numMonth += 1;
+
+    if (numMonth > 11) {
+        numMonth = 0;
+        year++;
+    }
+    month = monthArr[numMonth];
+
+    resetPage();
+    resetMonthGlobals();
+    constructedMonth = getMonth((numMonth + 1), year);
+    db.collection("users").doc(uid).get().then(function (snap) {
+        try {
+            userEvents = snap.data().events;
+        } catch {
+
+        }
+    }).then(function () {
+        getCalendarData();
+    });
+});
+
+$("#changeZip").on("click", function (e) {
+    e.preventDefault();
+    M.Modal.getInstance($("#accountModal")).close();
+    M.Modal.getInstance($("#changeZipModal")).open();
+});
+
+$("#changeZipForm").on("submit", function (e) {
+    e.preventDefault();
+
+    if ($.isNumeric($("#newZipInput").val())) {
+        zipCode = $("#newZipInput").val();
+
+        db.collection("users").doc(uid).update({
+            zipCode: zipCode
+        }).then(function () {
+            $("#newZipInput").val("");
+            M.Modal.getInstance($("#changeZipModal")).close();
+        });
+    } else {
+        alert("Please enter a valid ZIP code.");
+    }
+});
+
+function resetMonthGlobals() {
+    day = new Time(0, 1, 0, 0)
+    synodicMonth = new Time(0, 29, 12, 793)
+    metonicCycle = synodicMonth.times(235)
+    commonYear = synodicMonth.times(12)
+    leapYear = synodicMonth.times(13)
+}

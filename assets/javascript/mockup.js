@@ -28,7 +28,4 @@ function getMonth(month, year) {
     return monthObject
 }
 
-var month = "April";
-var year = 2019;
-var zipCode = null;
-var constructedMonth = getMonth(month, year);
+

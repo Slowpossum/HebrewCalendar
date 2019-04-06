@@ -2,12 +2,9 @@
 function randomVerse() {
   // Generate random number for book
   var book = Math.floor((Math.random() * 5) + 1);
-  console.log(book);
-
+  var test = "";
 	// Establish API request URL
 	var queryURL = `http://quotes.rest/bible/verse.json?book=${book}`;
-
-	console.log(queryURL);
 
 	// Perform AJAX request
 	$.ajax({
@@ -23,6 +20,6 @@ function randomVerse() {
 
     var fullVerse = randomVerse + "–" + bookChapVerse;
 
-    console.log(fullVerse);
-	});
+    $(".bibleQuote").text(fullVerse);
+  });
 }
